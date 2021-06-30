@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head> 
+    <title>prdelní prdel</title>
+  </head>
+<body>
+
+
+  <form id="frm1" action="https://www.nedatluj.cz/cviceni/spodni-rada-y-spojovnik/2" target="_blank">
+    <input type="number"><br>
+    <p id="prd"> zde bude tvoje heslo</p>
+    <button onclick="myFunction()">vygeneruj mi heslo!!</button>
+  </form> 
+  <script>
+function myFunction() {
+    var x = document.getElementById("frm1");
+    let pocitadlo = x.elements[0].value;
+    if (pocitadlo<=5){
+        document.write("jako chápu že jsi zvyklej na malý věci, ale aspoň to heslo si udělej dlouhý");
+    }
+    else {
+    let heslo = "";
+    for (let i=0;i<pocitadlo;i++){
+    heslo += "&#"+[Math.floor(Math.random() * (122 - 65) ) +65]+";";
+    }
+    const napis = document.getElementById("prd");
+    napis.innerHTML="toto je tvoje heslo kamarade:<br>"+heslo+" <br> ale neboj ja budu delat ze jsem nic nevidel takže ho muzes v pohode pouzivat ;)";
+}
+if (pocitadlo==69){x.action="https://youtu.be/lg5WKsVnEA4"}
+}
+</script>
+
+</body>
+</html>
