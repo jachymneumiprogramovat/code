@@ -1,74 +1,15 @@
-<!DOCTYPE html>
-<html>
-    <head>
-<title> lmao chtěl by jsi piškorky co?</title>
-<style>
-   table, tr, td {
-  border: 4px solid black;
-  padding: 60px;
-  font-size: 30px;
-  color: white;
-  transition: 0.5s;
-  border-collapse: collapse;
-
-}
-</style>
-    </head>
-    <body>
-        <!--hrací plocha-->
-<table >
-    <!--první sloupec-->
-<tr>
-    <td onclick="hraj(0,0,0)" class="HraciPlocha"> </td>
-    <td onclick="hraj(0,1,1)" class="HraciPlocha"> </td>
-    <td onclick="hraj(0,2,2)" class="HraciPlocha"> </td>
-    <td onclick="hraj(0,3,3)" class="HraciPlocha"> </td>
-</tr>
-
-    <!--druhý sloupec-->
-    <tr>
-        <td onclick="hraj(1,0,4)" class="HraciPlocha"> </td>
-        <td onclick="hraj(1,1,5)" class="HraciPlocha"> </td>
-        <td onclick="hraj(1,2,6)" class="HraciPlocha"> </td>
-        <td onclick="hraj(1,3,7)" class="HraciPlocha"> </td>
-    </tr>
-    
-    <!--třetí sloupec-->
-    <tr>
-        <td onclick="hraj(2,0,8)" class="HraciPlocha"> </td>
-        <td onclick="hraj(2,1,9)" class="HraciPlocha"> </td>
-        <td onclick="hraj(2,2,10)" class="HraciPlocha"> </td>
-        <td onclick="hraj(2,3,11)" class="HraciPlocha"> </td>
-    </tr>
-
-    <tr>
-        <td onclick="hraj(3,0,12)" class="HraciPlocha"> </td>
-        <td onclick="hraj(3,1,13)" class="HraciPlocha"> </td>
-        <td onclick="hraj(3,2,14)" class="HraciPlocha"> </td>
-        <td onclick="hraj(3,3,15)" class="HraciPlocha"> </td>
-    </tr>
-    </table>
-
-<!--bodovačka-->
-<table>
-
-</table>
-
-<form>
-    <label>teď hraje:</label>
-    <input id="kdohraje"> 
-</form>
-<p id="kolo"></p>
-
-
-<script> 
     //variabli co si ukradnu z DOMu
     let okynka = document.getElementsByClassName("HraciPlocha");
     let KdoHraje = document.getElementById("kdohraje");
     let PocetKol = document.getElementById("kolo")
+    let Pocitadlo = document.getElementById("vyhry")
 
+    let tabulka = document.getElementById("tabulka")
 
     //další variably
+    let PocetHer = 0;
+    let zmizeni = 0;
+    let txt;
     let kolo = 0;
     let konec = false;
     //kdo je kdo a kdo kolikrát podváděl
@@ -82,6 +23,8 @@
         ["","","",""],
         ["","","",""],
     ]
+let vyhry = [0,0];
+
 
 //plnění mizecího arry
     for(let i of okynka){
@@ -116,7 +59,7 @@ class hra{
         else{
             return true;
         }
-    
+            //kolikrát kdo podváděl
         for(let i=2;i<4;i++){
         if(hrac[i]==3){
         console.log("vyhral " + (kolo%2) + ". hráč protože ten druhej retard podávděl");
@@ -127,7 +70,7 @@ class hra{
         //tady nastavím kolik kol to vydrží
         mizeni[this.poradi]=8;
         for(let i = 0;i<okynka.length;i++){
-            //už funguje!!!
+            //tady se mění ta barva podle toho jak dlouho tam bude
             switch(mizeni[i]){
                 case 8:okynka[i].style.color="black";
                     mizeni[i]--
@@ -172,29 +115,54 @@ class hra{
                     okynka[i].innerHTML=" ";
                     mizeni[i]=NaN;
                     Arr[Math.floor(i/4)][i%4]="";
+                    zmizeni++;
                 break;
             }
         }
     }
-
     pocitadla(){
         //tady jsou jen takový ty zbytečnosti ale přibidou i super věěci
         KdoHraje.value=hrac[(kolo)%2];
         PocetKol.innerHTML=kolo+". kolo";
-
+        Pocitadlo.innerHTML=vyhry[0]+":"+vyhry[1];
     }
+    tabulka(){
+        PocetHer++
+        let rada = document.createElement("tr")
+        tabulka.appendChild(rada)
 
+        for(let i=0;i<4;i++){
+            let td = document.createElement("td")
+            rada.appendChild(td)
+
+            switch(i){
+                case 0: txt = PocetHer;
+                break;
+                case 1: txt = kolo;
+                break;
+                case 2: txt = zmizeni;
+                break;
+                case 3: txt = hrac[(kolo-1)%2]
+                break;
+            }
+            let text = document.createTextNode(txt)
+            td.appendChild(text)
+        }
+    }
     checkTheWinner(){
+        let cP = (kolo-1)%2
        //řady
        for (let i = 0;i<4;i++){
            if(Arr[i][0]==Arr[i][1]&&Arr[i][2]==Arr[i][3]&&Arr[i][0]!=""&&Arr[i][3]!==""){
             konec=true;
+            vyhry[cP]++;
             }
         }
        //ta druhá věc
        for (let j = 0;j<4;j++){
         if(Arr[0][j]==Arr[1][j]&&Arr[2][j]==Arr[3][j]&&Arr[0][j]!=""&&Arr[3][j]!=""){
             konec=true;
+            vyhry[cP]++;
             }
         }
 
@@ -202,18 +170,21 @@ class hra{
         //diagonály
         if(Arr[0][0]==Arr[1][1]&&Arr[2][2]==Arr[3][3]&&Arr[0][0]!=""&&Arr[3][3]!=""){
             konec=true;
+            vyhry[cP]++;
             }
         if(Arr[0][3]==Arr[1][2]&&Arr[2][1]==Arr[3][0]&&Arr[0][3]!=""&&Arr[3][0]!=""){
             konec=true;
+            vyhry[cP]++;
             }
         }
-
     clear(){
         for(let el=0; el<okynka.length;el++){
         //čištění hrací plochy
            okynka[el].innerHTML=" ";
         //čištění mizení
-           mizeni[el]=0;
+           mizeni[el]=NaN;
+        //čištění kol
+        kolo=0;
         }
         //čištění pozic v tom kdo vyhrál
         Arr = [
@@ -224,6 +195,8 @@ class hra{
         ]
         //čištění toho kolikrát jsi podváděl
         hrac = ["O","X",0,0];
+        konec=false;
+        zmizeni = 0
     }
 }
     
@@ -235,16 +208,15 @@ class hra{
 
     //tady se počítá kolik má jaká kostička ještě zůstat na herním pláně
     hraj.odeber();
-    //tady jsou takový ty ukzatele
-    hraj.pocitadla();
     //kdo vyhrál? zatím docela amatérská metoda koukání se na to kdo vyhrál to by chtělo zlepšit
     hraj.checkTheWinner();
     if(konec==true){
+        //tady se přidá novej záznam do tabulky
+        hraj.tabulka()
+
         //tady se to čistí aby potom mohlo být počítadlo výher 
         hraj.clear();
     }
+    //tady jsou takový ty ukzatele
+    hraj.pocitadla();
     }
-</script>
-    </body>
-</html>
-
