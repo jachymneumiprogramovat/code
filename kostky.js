@@ -22,3 +22,4 @@ for(let i5=1;i5<=6;i5++){
     }
 }
 console.log(obj)
+//if you are not dumb as i am you can just multiply the number of dices by 3,5 and you will get the result. If it is in the middle of two numberes then it is both of them.
