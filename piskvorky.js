@@ -1,76 +1,15 @@
-<!DOCTYPE html>
-<html>
-    <head>
-<title> lmao chtěl by jsi piškorky co?</title>
-<style>
-   table, tr, .HraciPlocha{
-  border: 4px solid black;
-  padding: 60px;
-  font-size: 30px;
-  color: white;
-  transition: 0.5s;
-  border-collapse: collapse;
-}
-
-#tabulka, tr, td{
-    font-size:medium;
-    padding: 5px;
-    color:black;
-    border: 2px solid black
-}
-
-table, tr, .jjh{
-  border: 4px solid black;
-  padding: 60px;
-  font-size: 30px;
-  color: white;
-  transition: 0.5s;
-  border-collapse: collapse;
-}
-
-</style>
-    </head>
-    <body>
-        <h1 style="letter-spacing: 30px;text-align: center;" id="vyhry">0:0</h1>
-
-
-        <!--hrací plocha-->
-<br>
-<br>
-
-<form>
-    <label>teď hraje:</label>
-    <input id="kdohraje"> 
-</form>
-<p id="kolo"></p>
-
-<!--bodovačka-->
-<table id="tabulka">
-    <tr>
-        <td>počet her</td>
-        <td>počet kol</td>
-        <td>kolik toho zmizlo</td>
-        <td>kdo vyhrál</td>
-
-    </tr>
-</table>
-
-
-<table id="tt">
-
-</table>
-    
-
-<script src="piskvorky.js"> 
     //variabli co si ukradnu z DOMu
-    /*
-    let okynka = document.getElementsByClassName("HraciPlocha");
+    let okynka = document.getElementsByClassName("jjh");
     let KdoHraje = document.getElementById("kdohraje");
     let PocetKol = document.getElementById("kolo")
     let Pocitadlo = document.getElementById("vyhry")
 
+    let tabulka = document.getElementById("tabulka")
 
     //další variably
+    let PocetHer = 0;
+    let zmizeni = 0;
+    let txt; 
     let kolo = 0;
     let konec = false;
     //kdo je kdo a kdo kolikrát podváděl
@@ -107,7 +46,7 @@ class hra{
     }
     check(){
         //haloo haloo je tam někdo?
-        if (okynka[this.poradi].innerHTML!=" "){
+        if (okynka[this.poradi].innerHTML!=""){
         console.log("tak jsi úplněj retard? a podvádět se nemá...");
         kolo++;
             if(kolo%2==0){
@@ -175,20 +114,42 @@ class hra{
                     okynka[i].style.color="white"
                     okynka[i].innerHTML=" ";
                     mizeni[i]=NaN;
+                    //tady se podle toho celkového pořadí vypočítá kde to je v tom array a tam se to odebere,
                     Arr[Math.floor(i/4)][i%4]="";
+                    zmizeni++;
                 break;
             }
         }
     }
-
     pocitadla(){
         //tady jsou jen takový ty zbytečnosti ale přibidou i super věěci
         KdoHraje.value=hrac[(kolo)%2];
         PocetKol.innerHTML=kolo+". kolo";
         Pocitadlo.innerHTML=vyhry[0]+":"+vyhry[1];
-
     }
+    tabulka(){
+        PocetHer++
+        let rada = document.createElement("tr")
+        tabulka.appendChild(rada)
 
+        for(let i=0;i<4;i++){
+            let td = document.createElement("td")
+            rada.appendChild(td)
+
+            switch(i){
+                case 0: txt = PocetHer;
+                break;
+                case 1: txt = kolo;
+                break;
+                case 2: txt = zmizeni;
+                break;
+                case 3: txt = hrac[(kolo-1)%2]
+                break;
+            }
+            let text = document.createTextNode(txt)
+            td.appendChild(text)
+        }
+    }
     checkTheWinner(){
         let cP = (kolo-1)%2
        //řady
@@ -217,13 +178,12 @@ class hra{
             vyhry[cP]++;
             }
         }
-
     clear(){
         for(let el=0; el<okynka.length;el++){
         //čištění hrací plochy
            okynka[el].innerHTML=" ";
         //čištění mizení
-           mizeni[el]=0;
+           mizeni[el]=NaN;
         //čištění kol
         kolo=0;
         }
@@ -237,27 +197,49 @@ class hra{
         //čištění toho kolikrát jsi podváděl
         hrac = ["O","X",0,0];
         konec=false;
+        zmizeni = 0
     }
 }
     
-    function hraj (tr,td,poradi){
-    let hraj = new hra(tr,td,poradi);
-    if (hraj.check()==true){
-        hraj.play();
-    };
 
-    //tady se počítá kolik má jaká kostička ještě zůstat na herním pláně
-    hraj.odeber();
-    //kdo vyhrál? zatím docela amatérská metoda koukání se na to kdo vyhrál to by chtělo zlepšit
-    hraj.checkTheWinner();
-    if(konec==true){
-        //tady se to čistí aby potom mohlo být počítadlo výher 
-        hraj.clear();
+
+    let tt = document.getElementById("tt")
+    for(let i=0;i<4;i++){
+        i=i.toString()
+        let rr = document.createElement("tr")
+        tt.appendChild(rr)
+        rr.id= i.toString()
+
+        for(let j=0;j<4;j++){
+            j=j.toString()
+            let sloupec = document.createElement("td")
+            rr.appendChild(sloupec)
+            sloupec.className="jjh"
+            
+            let poradi = i*3+parseInt(j)+parseInt(i)
+
+            sloupec.onclick =     function hraj (){
+                let hraj = new hra(i,j,poradi);
+                console.log(i,j,poradi)
+                if (hraj.check()==true){
+                    hraj.play();
+                };
+            
+                //tady se počítá kolik má jaká kostička ještě zůstat na herním pláně
+                hraj.odeber();
+                //kdo vyhrál? zatím docela amatérská metoda koukání se na to kdo vyhrál to by chtělo zlepšit
+                hraj.checkTheWinner();
+                if(konec==true){
+                    //tady se přidá novej záznam do tabulky
+                    hraj.tabulka()
+            
+                    //tady se to čistí aby potom mohlo být počítadlo výher 
+                    hraj.clear();
+                }
+                //tady jsou takový ty ukzatele
+                hraj.pocitadla();
+                }
+            
+        }
     }
-    //tady jsou takový ty ukzatele
-    hraj.pocitadla();
-    }
-    */
-</script>
-    </body>
-</html>
+
