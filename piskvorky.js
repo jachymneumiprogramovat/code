@@ -17,18 +17,19 @@
     let txt; 
     let kolo = 0;
     let konec = false;
+    let vydrz = 8;
     //kdo je kdo a kdo kolikrát podváděl
     let hrac = ["O","X",0,0];
     //kolik kterýmu políčku zbývá času na hrací ploše
-    let mizeni = [];
    //tohle slouží k tomu abych zaznamenábal pozice v tabulce do arraye a mohl je potom čeknout kdo vyhrál 
     let Arr = new Array(hraciPlocha+1)
+
 for (var i = 0; i < Arr.length; i++) {
   Arr[i] = new Array(hraciPlocha+1);
 }
 for(let i of Arr){  
     for(let j=0;j<hraciPlocha+1;j++){
-        i[j]=" "
+        i[j]=[" ", NaN]
     }
 }
 
@@ -37,9 +38,6 @@ let vyhry = [0,0];
 
 
 //plnění mizecího arry
-    for(let i of okynka){
-mizeni[i]=NaN ;
-    }
 
 class hra{
     //existence
@@ -47,21 +45,22 @@ class hra{
         this.tr=tr;
         this.td=td;
         this.poradi = poradi;
+        this.souradnice = rady[this.tr].getElementsByClassName("jjh")[this.td]
+        this.Arr = Arr[this.tr][this.td];
     } 
     play(){
         //tohle je defakto celá hra...
 
-        rady[this.tr].getElementsByClassName("jjh")[this.td].innerHTML=hrac[kolo%2]
-        Arr[this.tr][this.td]=hrac[kolo%2];
+        this.souradnice.innerHTML=hrac[kolo%2]
+        this.Arr[0]=hrac[kolo%2];
 
-        console.log(this.td,this.tr, this.poradi,hraciPlocha, Arr)
         kolo++;
   
     }
     check(){
         //haloo haloo je tam někdo?
-        if (okynka[this.poradi].innerHTML=="X" || okynka[this.poradi].innerHTML=="O"){
-        console.log("tak jsi úplněj retard? a podvádět se nemá...");
+        if (this.souradnice.innerHTML=="X" || this.souradnice.innerHTML=="O"){
+        console.log(this.td,this.tr, this.poradi,hraciPlocha, okynka[this.poradi])
         kolo++;
             if(kolo%2==0){
             hrac[2]++;
@@ -82,66 +81,69 @@ class hra{
     }
     odeber(){
         //tady nastavím kolik kol to vydrží
-        mizeni[this.poradi]=8;
-        for(let i = 0;i<mizeni.length;i++){
+       this.Arr[1]=vydrz;
+       console.log('něco')
+        for(let h=0;h<okynka.length;h++){
+            console.log('tvoje máma')
+            let temp = rady[Math.floor(h/(hraciPlocha+1))].getElementsByClassName("jjh")[h%(hraciPlocha+1)]
+            let Arrtemp = Arr[Math.floor(h/(hraciPlocha+1))][h%(hraciPlocha+1)]
+
             //tady se mění ta barva podle toho jak dlouho tam bude
-            switch(mizeni[i]){
-                case 8:okynka[i].style.color="black";
-                    mizeni[i]--
+            switch(Arrtemp[1]){
+                case 8:temp.style.color="black";
+                    Arrtemp[1]--
                 break;
 
-                case 7:okynka[i].style.color="rgba(50,0,0,0.9)";
-                    mizeni[i]--
+                case 7:temp.style.color="rgba(50,0,0,0.9)";
+                    Arrtemp[1]--
                 break;
 
                 case 6:
-                    okynka[i].style.color="rgba(75,0,0,0.8)"
-                    mizeni[i]--;
+                    temp.style.color="rgba(75,0,0,0.8)"
+                    Arrtemp[1]--;
                 break;
 
                 case 5:
-                    okynka[i].style.color="rgba(125,0,0,0.75)"
-                    mizeni[i]--;
+                    temp.style.color="rgba(125,0,0,0.75)"
+                    Arrtemp[1]--;
                 break;
 
                 case 4:
-                    okynka[i].style.color="rgba(150,0,0,0.7)"
-                    mizeni[i]--;
+                    temp.style.color="rgba(150,0,0,0.7)"
+                    Arrtemp[1]--;
                 break;
 
                 case 3:
-                    okynka[i].style.color="rgba(175,0,0,0.65)"
-                    mizeni[i]--;
+                    temp.style.color="rgba(175,0,0,0.65)"
+                    Arrtemp[1]--;
                 break;
 
                 case 2:
-                    okynka[i].style.color="rgba(220,0,0,0.5)"
-                    mizeni[i]--;
+                    temp.style.color="rgba(220,0,0,0.5)"
+                    Arrtemp[1]--;
                 break;
 
                 case 1:
-                    okynka[i].style.color="rgba(255,0,0,0.45)"
-                    mizeni[i]--;
+                    temp.style.color="rgba(255,0,0,0.45)"
+                    Arrtemp[1]--;
                 break;
 
                 case 0:
-                    okynka[i].style.color="white"
-                    okynka[i].innerHTML=" ";
-                    mizeni[i]=NaN;
+                    temp.style.color="white"
+                    temp.innerHTML=" ";
+                    Arrtemp[1]=NaN;
                     //tady se podle toho celkového pořadí vypočítá kde to je v tom array a tam se to odebere,
-                    Arr[Math.floor(i/(hraciPlocha+1))][i%(hraciPlocha+1)]="";
+                    Arrtemp[0]="";
                     zmizeni++;
                 break;
                 
                 case NaN: 
-                okynka[i].innerHTML=" ";
-                Arr[Math.floor(i/(hraciPlocha+1))][i%(hraciPlocha+1)]="";
+                temp.innerHTML=" ";
+                Arrtemp[0]="";
                     break;
             }
-        //okynka[i].style.padding=`${100/(hraciPlocha/2)}px`
-        //okynka[i].style.fontSize = `${50/(hraciPlocha/3)}px`
+            console.log(Arr)
         }
-
     }
     pocitadla(){
         //tady jsou jen takový ty zbytečnosti ale přibidou i super věěci
@@ -179,15 +181,13 @@ class hra{
         for(let el=0; el<okynka.length;el++){
         //čištění hrací plochy
            okynka[el].innerHTML=" ";
-        //čištění mizení
-           mizeni[el]=NaN;
         //čištění kol
         kolo=0;
         }
         //čištění pozic v tom kdo vyhrál
         for(let i of Arr){  
             for(let j=0;j<hraciPlocha+1;j++){
-                i[j]=" "
+                i[j]=[" ", 0]
             }
         }
         //čištění toho kolikrát jsi podváděl
@@ -226,12 +226,12 @@ class hra{
                 Arr.push(new Array())
 
                 for(let k=0;k<=hraciPlocha;k++){
-                    Arr[Arr.length-1].push(" ")
+                    Arr[Arr.length-1].push([" ", 0])
                 }
             }
 
             for(let i of Arr){
-                    i.push(" ")
+                    i.push([" ",0])
             }
 
            hraciPlocha++
@@ -266,13 +266,15 @@ let tt = document.getElementById("tt")
             sloupec.onclick =     function hraj (){
                 let hraj = new hra(i,j,poradi); 
                 if (hraj.check()==true){
-                    hraj.posunuti()
                     hraj.play();
+                    hraj.posunuti()
                 };
             
                 //tady se počítá kolik má jaká kostička ještě zůstat na herním pláně
+                
                 hraj.odeber();
                 //kdo vyhrál? zatím docela amatérská metoda koukání se na to kdo vyhrál to by chtělo zlepšit
+                
                 //hraj.checkTheWinner();
                 if(konec==true){
                     //tady se přidá novej záznam do tabulky
