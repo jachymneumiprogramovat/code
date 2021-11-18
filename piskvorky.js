@@ -60,7 +60,6 @@ class hra{
     check(){
         //haloo haloo je tam někdo?
         if (this.souradnice.innerHTML=="X" || this.souradnice.innerHTML=="O"){
-        console.log(this.td,this.tr, this.poradi,hraciPlocha, okynka[this.poradi])
         kolo++;
             if(kolo%2==0){
             hrac[2]++;
@@ -87,6 +86,10 @@ class hra{
             console.log('tvoje máma')
             let temp = rady[Math.floor(h/(hraciPlocha+1))].getElementsByClassName("jjh")[h%(hraciPlocha+1)]
             let Arrtemp = Arr[Math.floor(h/(hraciPlocha+1))][h%(hraciPlocha+1)]
+
+            //resizing the squares
+            temp.style.fontSize = 10+200/hraciPlocha+"px"
+            temp.style.padding = 5+(300/hraciPlocha)+"px"
 
             //tady se mění ta barva podle toho jak dlouho tam bude
             switch(Arrtemp[1]){
@@ -142,7 +145,6 @@ class hra{
                 Arrtemp[0]="";
                     break;
             }
-            console.log(Arr)
         }
     }
     pocitadla(){
@@ -211,6 +213,30 @@ class hra{
                     rr.appendChild(sloupec)
                     sloupec.className="jjh"
                     sloupec.innerHTML=rady.length;
+                    //  let poradi = i*hraciPlocha+parseInt(j)+parseInt(i)
+                    // sloupec.onclick =     function hraj (){
+                    //     let hraj = new hra(i,j,poradi); 
+                    //     if (hraj.check()==true){
+                    //         hraj.play();
+                    //         hraj.posunuti()
+                    //     };
+                    
+                    //     //tady se počítá kolik má jaká kostička ještě zůstat na herním pláně
+                        
+                    //     hraj.odeber();
+                    //     //kdo vyhrál? zatím docela amatérská metoda koukání se na to kdo vyhrál to by chtělo zlepšit
+                        
+                    //     //hraj.checkTheWinner();
+                    //     if(konec==true){
+                    //         //tady se přidá novej záznam do tabulky
+                    //         hraj.tabulka()
+                    
+                    //         //tady se to čistí aby potom mohlo být počítadlo výher 
+                    //         hraj.clear();
+                    //     }
+                    //     //tady jsou takový ty ukzatele
+                    //     hraj.pocitadla();
+                    //     }
                     
                 }
             }
