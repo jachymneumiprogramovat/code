@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+<form>
+    <label>tady zadej tvoje body</label>
+<br>
+    <input id="1">
+    <input id="2">
+    <button onclick="math()">odešli to</button>
+</form>
+<script>
+    function math(){
+        let A = document.getElementById("1").value.toString()
+        let B = document.getElementById("2").value.toString()
+        A = A.split(",")
+        B = B.split(",")
+        
+        document.write((parseInt(A[1])+parseInt(B[1]))/(parseInt(A[0])+parseInt(B[0])))
+    }
+</script>
+
+</html>
