@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>tady bude váš kondiciogram</title>
+<style>
+    #id ,tr,td{
+    border: 5px solid black;
+    padding: 10px;
+    font-size: large;
+    border-collapse: collapse    }
+</style>
+</head>
+<button onclick="stroj()">jáchyme hoď mě do stroje</button>
+<table id="id">
+    <tr id="cisla"></tr>
+
+</table>
+<script>
+let tabulka = document.getElementById("id")
+let delky = [31,28,31,30,31,30,31,31,30,31,30,31]
+let hodnoty = ["*","0","×","•"]
+const cisla=document.getElementById("cisla")
+let nazvy = ["Leden","Únor","Březen","Duben","Květen","Červen","Červenec","Srpen","Září","Říjen","Listopad","Prosinec"]
+
+for(let i=0;i<12;i++){
+    let sloupce = document.createElement('tr')
+    tabulka.appendChild(sloupce)
+    let td = document.createElement("td")
+    sloupce.appendChild(td)
+    td.innerHTML=nazvy[i]
+    sloupce.className="mesice"
+}
+
+let mesice = document.getElementsByClassName("mesice")
+
+for(let i=0;i<=31;i++){
+    let td = document.createElement("td")
+    cisla.appendChild(td)
+    td.innerHTML=i
+}
+
+
+function stroj(){
+
+    for(let i=0;i<12;i++){
+
+
+        for(let j=0;j<delky[i];j++){
+            let min = document.createElement("td")
+            mesice[i].appendChild(min)
+            min.innerHTML=kondiciogram()
+        }
+    }
+}
+
+function kondiciogram(){
+    console.log(Math.floor(Math.random()*hodnoty.length))
+    switch(Math.floor(Math.random()*hodnoty.length)){
+        case 0: return hodnoty[0]
+        case 1: return hodnoty[1]
+        case 2: return hodnoty[2]
+        case 3: return hodnoty[3]
+    }
+}
+</script>
+</html>
