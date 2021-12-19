@@ -4,12 +4,23 @@
 <title>tady bude váš kondiciogram</title>
 <style>
     #id ,tr,td{
-    border: 5px solid black;
-    padding: 10px;
+    border: 4px solid black;
+    padding: 7px;
+    text-align: center;
     font-size: large;
+    font-weight: 900;
     border-collapse: collapse    }
 </style>
 </head>
+<p>nepátrej ve snáři... neptej se hvězd. kdy štěstí zazáří a začne kvést. zítra tě probudí tvůj velký den</p>
+<form>
+    <label>jak se jmenujete?</label>
+    <input type="text" value="František koudelka">
+    <br>
+    <label>kdy jste se narodil?</label>
+    <input type="text" value="8.2.1952">
+</form>
+
 <button onclick="stroj()">jáchyme hoď mě do stroje</button>
 <table id="id">
     <tr id="cisla"></tr>
@@ -18,7 +29,13 @@
 <script>
 let tabulka = document.getElementById("id")
 let delky = [31,28,31,30,31,30,31,31,30,31,30,31]
-let hodnoty = ["*","0","×","•"]
+//let hodnoty = ["*","0","×","•"]
+const hodnoty = {
+  0: "*",
+  1: "0",
+  2: "×",
+  3: "•"
+}
 const cisla=document.getElementById("cisla")
 let nazvy = ["Leden","Únor","Březen","Duben","Květen","Červen","Červenec","Srpen","Září","Říjen","Listopad","Prosinec"]
 
@@ -54,13 +71,7 @@ function stroj(){
 }
 
 function kondiciogram(){
-    console.log(Math.floor(Math.random()*hodnoty.length))
-    switch(Math.floor(Math.random()*hodnoty.length)){
-        case 0: return hodnoty[0]
-        case 1: return hodnoty[1]
-        case 2: return hodnoty[2]
-        case 3: return hodnoty[3]
-    }
+return hodnoty[Math.floor(Math.random()*4)]
 }
 </script>
 </html>
