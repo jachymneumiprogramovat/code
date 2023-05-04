@@ -1,7 +1,8 @@
 import turtle as tur
 import turtle
 
-
+from functools import reduce
+from math import sqrt
 #initalize turtle
 turtle.speed("fastest")
 tur.pensize(1)
@@ -26,6 +27,19 @@ colors={
 
 COLOR = (255, 0, 0)
 TARGET = (155,200,0)
+
+#standard deviation variables
+
+
+def standard_deviation(data:list):
+    size = len(data)
+    mean = reduce(lambda a, b :float(a[1])+float(b[1]),data)//size
+    sigma = 0
+    for dato in data:
+        var=float(dato[1])-mean
+        sigma+=var^2
+    sigma/=size-1
+    sigma = sqrt(sigma)
 
 
 
@@ -96,7 +110,7 @@ def popisky():
     tur.write("This is very susy graph")
 
     #legend
-    position=[300,175]
+    position=[330,220]
     tur.goto(position)
     for dato in samples:
         tur.fillcolor(dato[1])
@@ -139,6 +153,7 @@ def file_to_graph(path,color,line,name):
 
 
 file_to_graph("NaYS2_Eu_Ex455.txt","blue",True,"NaYS2")
+print(standard_deviation(load_data("NaYS2_Eu_Ex455.txt")))
 file_to_graph("TS172_K0_89NaYS2_Eu_Ex455.txt","purple",True,"K89:NaYS2")
 file_to_graph("TS132_KYS2_Eu_Ex455.txt","red",True,"KYS2")
 file_to_graph("TS169_K0_91NaYS2_Eu_Ex455.txt","brown",True,"K91:NaYS2")
@@ -147,4 +162,3 @@ draw_axies(xstart, yincrement,"black")
 popisky()
 
 tur.done()
-
